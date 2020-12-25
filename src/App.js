@@ -13,7 +13,7 @@ const App = () => {
   const [fileName, setFileName] = useState('');
 
   const downloadUrl = async () => {
-    const downloadUrl = await Storage.get(fileName, { level: 'private', expires: 10 });
+    const downloadUrl = await Storage.get(fileName, { level: 'private', expires: 10, download: true });
     window.location.href = downloadUrl
   }
 
