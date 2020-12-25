@@ -13,8 +13,7 @@ const App = () => {
   const [fileName, setFileName] = useState('');
 
   const downloadUrl = async () => {
-    const res = await Storage.get(fileName, { level: 'private', expires: 10, download: true });
-    Storage.get(fileKey, { download: true })
+    Storage.get(fileKey, { level: 'private', download: true })
       .then(res => downloadBlob(res.Body, fileName))
   }
 
