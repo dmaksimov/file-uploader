@@ -10,9 +10,10 @@ Amplify.configure(awsconfig);
 const App = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [fileName, setFileName] = useState('');
 
   const downloadUrl = async () => {
-    const downloadUrl = await Storage.get('picture.jpg', { level: 'private', expires: 10 });
+    const downloadUrl = await Storage.get(fileName, { level: 'private', expires: 10 });
     window.location.href = downloadUrl
   }
 
@@ -26,6 +27,7 @@ const App = () => {
       });
       const url = await Storage.get(file.name, { level: 'private' })
       setImageUrl(url);
+      setFileName(file.name);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -50,4 +52,4 @@ const App = () => {
   );
 }
 
-export default withAuthenticator(App);
+export default App;
