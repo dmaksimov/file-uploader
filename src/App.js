@@ -20,11 +20,11 @@ const App = () => {
     const file = e.target.files[0];
     try {
       setLoading(true);
-      await Storage.put('picture.jpg', file, {
+      await Storage.put(file.name, file, {
         level: 'private',
         contentType: 'image/jpg'
       });
-      const url = await Storage.get('picture.jpg', { level: 'private' })
+      const url = await Storage.get(file.name, { level: 'private' })
       setImageUrl(url);
       setLoading(false);
     } catch (err) {
@@ -36,11 +36,11 @@ const App = () => {
     <div className="App">
       <h1> Upload an Image </h1>
       {loading ? <h3>Uploading...</h3> : <input
-        type="file" accept='image/jpg'
+        type="file"
         onChange={(evt) => handleChange(evt)}
       />}
       <div>
-        {imageUrl ? <img style={{ width: "30rem" }} src={imageUrl} /> : <span />}
+        {imageUrl ? (<a href={imageUrl}>{imageUrl}</a>) : <span />}
       </div>
       <div>
         <h2>Download URL?</h2>
