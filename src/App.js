@@ -8,7 +8,7 @@ import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
 const App = () => {
-  const [imageUrl, setImageUrl] = useState(null);
+  const [fileUrl, setFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState('');
 
@@ -39,10 +39,9 @@ const App = () => {
       setLoading(true);
       await Storage.put(file.name, file, {
         level: 'private',
-        contentType: 'image/jpg'
       });
       const url = await Storage.get(file.name, { level: 'private' })
-      setImageUrl(url);
+      setFileUrl(url);
       setFileName(file.name);
       setLoading(false);
     } catch (err) {
@@ -52,13 +51,13 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1> Upload an Image </h1>
+      <h1> Upload a File </h1>
       {loading ? <h3>Uploading...</h3> : <input
         type="file"
         onChange={(evt) => handleChange(evt)}
       />}
       <div>
-        {imageUrl ? (<a href={imageUrl}>{imageUrl}</a>) : <span />}
+        {fileUrl ? (<a href={fileUrl}>{fileUrl}</a>) : <span />}
       </div>
       <div>
         <h2>Download URL?</h2>
