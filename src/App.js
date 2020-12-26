@@ -21,7 +21,7 @@ const App = () => {
       await Storage.put(file.name, file, {
         level: 'private',
         progressCallback(progress) {
-          setProgress(Math.floor(progress.loaded / progress.total));
+          setProgress(Math.floor((progress.loaded / progress.total) * 100));
         },
       });
       const url = await Storage.get(file.name, { level: 'private' })
