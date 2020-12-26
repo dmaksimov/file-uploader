@@ -11,6 +11,7 @@ const App = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [progress, setProgress] = useState({});
 
   const downloadUrl = async () => {
     Storage.get(fileName, { level: 'private', download: true })
@@ -39,6 +40,9 @@ const App = () => {
       setLoading(true);
       await Storage.put(file.name, file, {
         level: 'private',
+        progressCallback(progress) {
+          setProgress(progress);
+        },
       });
       const url = await Storage.get(file.name, { level: 'private' })
       setFileUrl(url);
@@ -52,7 +56,7 @@ const App = () => {
   return (
     <div className="App">
       <h1> Upload a File </h1>
-      {loading ? <h3>Uploading...</h3> : <input
+      {loading ? <h3>Uploading... {progress.loaded}/{progress.total}</h3> : <input
         type="file"
         onChange={(evt) => handleChange(evt)}
       />}
