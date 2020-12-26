@@ -18,6 +18,8 @@ const App = () => {
     try {
       setLoading(true);
       setFileName('');
+      setFileUrl(null);
+      setProgress(0);
       await Storage.put(file.name, file, {
         level: 'private',
         progressCallback(progress) {
