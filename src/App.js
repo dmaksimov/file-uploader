@@ -13,35 +13,15 @@ const App = () => {
   const [fileName, setFileName] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const downloadUrl = async () => {
-    Storage.get(fileName, { level: 'private', download: true })
-      .then(res => downloadBlob(res.Body, fileName))
-  }
-
-  const downloadBlob = (blob, filename) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename || 'download';
-    const clickHandler = () => {
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-        a.removeEventListener('click', clickHandler);
-      }, 150);
-    };
-    a.addEventListener('click', clickHandler, false);
-    a.click();
-    return a;
-  }
-
   const handleChange = async (e) => {
     const file = e.target.files[0];
     try {
       setLoading(true);
+      setFileName('');
       await Storage.put(file.name, file, {
         level: 'private',
         progressCallback(progress) {
-          setProgress(Math.round(progress.loaded / progress.total));
+          setProgress(Math.floor(progress.loaded / progress.total));
         },
       });
       const url = await Storage.get(file.name, { level: 'private' })
@@ -61,11 +41,7 @@ const App = () => {
         onChange={(evt) => handleChange(evt)}
       />}
       <div>
-        {fileUrl ? (<a href={fileUrl}>{fileUrl}</a>) : <span />}
-      </div>
-      <div>
-        <h2>Download URL?</h2>
-        <button onClick={() => downloadUrl()}>Click Here!</button>
+        {fileUrl ? (<span>Done!</span>) : <span />}
       </div>
     </div>
   );
